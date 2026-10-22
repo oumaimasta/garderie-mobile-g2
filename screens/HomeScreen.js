@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { View, Text, TouchableOpacity, Modal, Pressable, FlastList, StyleSheet } from 'react-native';
+import { View, Text, TouchableOpacity, Modal, Pressable, FlastList, StyleSheet, Alert, } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { Ionicons } from '@expo/vector-icons';
 
@@ -18,6 +18,15 @@ const MENUS = [
 
 export default function HomeScreen() {
   const [drawerOpen, setDrawerOpen] = useState(false);
+  const [selected, setSelected] = useState('accueil');
+  const onSearch = () => Alert.alert('Recherche', 'Rechercher un menu');
+  const onNotifications = () => Alert.alert('Notifications', 'Aucune notification');
+  const onAdd = () => Alert.alert('Ajout', 'Ajouter un menu');
+  const onSelectMenu = (item) => Alert.alert('Menu sélectionné', item.titre);
+  const onSelectDrawer = (item) => {
+    setSelected(item.key);
+    setDrawerOpen(false);
+  };
 
   return (
     <SafeAreaView style={styles.container} edges={['top']}>
@@ -65,10 +74,14 @@ export default function HomeScreen() {
           <SafeAreaView style={styles.drawer}>
             <Text style={styles.drawerHeader}>Ma Garderie</Text>
             {DRAWER_ITEMS.map((item) => (
-              <TouchableOpacity key={item.key} style={styles.drawerItem}>
-                <Ionicons name={item.icon} size={22} color="#E67E22" />
-                <Text style={styles.drawerLabel}>{item.label}</Text>
-              </TouchableOpacity>
+               <TouchableOpacity
+                    key={item.key}
+                    style={[styles.drawerItem, selected === item.key && styles.drawerItemActive]}
+                    onPress={() => onSelectDrawer(item)}
+                >
+                    <Ionicons name={item.icon} size={22} color={BLUE} />
+                    <Text style={styles.drawerLabel}>{item.label}</Text>
+                </TouchableOpacity>
             ))}
           </SafeAreaView>
           <Pressable style={styles.backdrop} onPress={() => setDrawerOpen(false)} />
@@ -96,4 +109,5 @@ const styles = StyleSheet.create({
   cardIcon: { fontSize: 36, marginRight: 16 },
   cardTitle: { fontSize: 18, fontWeight: 'bold', color: '#333' },
   cardDesc: { fontSize: 14, color: '#777', marginTop: 4 },
+  drawerItemActive: { backgroundColor: '#FFE9CC' },
     });
