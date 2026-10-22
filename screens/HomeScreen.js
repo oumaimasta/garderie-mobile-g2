@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { View, Text, TouchableOpacity, Modal, Pressable, StyleSheet } from 'react-native';
+import { View, Text, TouchableOpacity, Modal, Pressable, FlastList, StyleSheet } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { Ionicons } from '@expo/vector-icons';
 
@@ -7,6 +7,13 @@ const DRAWER_ITEMS = [
   { key: 'accueil', label: 'Accueil', icon: 'home-outline' },
   { key: 'menus', label: 'Menus', icon: 'restaurant-outline' },
   { key: 'apropos', label: 'À propos', icon: 'information-circle-outline' },
+];
+const MENUS = [
+  { id: 1, titre: 'Petit déjeuner', description: 'Lait, céréales et fruits', icone: '🥣' },
+  { id: 2, titre: 'Déjeuner', description: 'Poulet, riz et légumes', icone: '🍲' },
+  { id: 3, titre: 'Goûter', description: 'Biscuit et compote de pomme', icone: '🍪' },
+  { id: 4, titre: 'Jus de fruits', description: "Jus d'orange naturel", icone: '🍊' },
+  { id: 5, titre: 'Fruits frais', description: 'Une sélection de fruits de saison', icone: '🍎' },
 ];
 
 export default function HomeScreen() {
@@ -32,6 +39,20 @@ export default function HomeScreen() {
 
       {/* Contenu */}
       <Text style={styles.sectionTitle}>Menus du jour</Text>
+      <FlatList
+        data={MENUS}
+        keyExtractor={(item) => String(item.id)}
+        contentContainerStyle={{ paddingHorizontal: 16, paddingBottom: 100 }}
+        renderItem={({ item }) => (
+            <TouchableOpacity style={styles.card}>
+            <Text style={styles.cardIcon}>{item.icone}</Text>
+            <View style={{ flex: 1 }}>
+                <Text style={styles.cardTitle}>{item.titre}</Text>
+                <Text style={styles.cardDesc}>{item.description}</Text>
+            </View>
+            </TouchableOpacity>
+        )}
+        />
 
       {/* FAB */}
       <TouchableOpacity style={styles.fab}>
@@ -71,4 +92,8 @@ const styles = StyleSheet.create({
   drawerHeader: { fontSize: 22, fontWeight: 'bold', color: '#E67E22', padding: 20 },
   drawerItem: { flexDirection: 'row', alignItems: 'center', paddingVertical: 14, paddingHorizontal: 20 },
   drawerLabel: { fontSize: 17, marginLeft: 14, color: '#333' },
-});
+  card: { flexDirection: 'row', alignItems: 'center', backgroundColor: '#fff', borderRadius: 12, padding: 16, marginBottom: 12, elevation: 2 },
+  cardIcon: { fontSize: 36, marginRight: 16 },
+  cardTitle: { fontSize: 18, fontWeight: 'bold', color: '#333' },
+  cardDesc: { fontSize: 14, color: '#777', marginTop: 4 },
+    });
